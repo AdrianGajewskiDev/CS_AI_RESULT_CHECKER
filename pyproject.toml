@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "Results checker"
+version = "0.1.0"
+description = ""
+authors = ["Adrian Gajewski <adrian.gajewski.projectx@gmail.com>"]
+readme = "README.md"
+packages = [{include = "results_checker"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pydantic = "^1.5.1"
+requests = "2.32.3"
+
+[tool.poetry.dev-dependencies]
+black = "^23.1.0"
+boto3 = "^1.26.56"
+flake8 = "^6.0.0"
+isort = "^5.12.0"
+mypy = "^1.0.0"
+pytest = "^7.2.1"
+pytest-cov = "^4.0.0"
+pytest-mock = "^3.14.0"
+pytest-asyncio = "^0.23.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
