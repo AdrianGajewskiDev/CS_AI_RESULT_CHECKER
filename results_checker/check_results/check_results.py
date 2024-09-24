@@ -3,6 +3,7 @@ from ast import Tuple
 from results_checker.check_all_results_completed.check_all_results_completed import check_all_results_completed
 from results_checker.dynamo_db.dynamo_db import save_results, update_task_status
 from results_checker.logging.logger import InternalLogger
+from results_checker.sns.sns import publish_to_sns
 
 
 def check_results(event: dict) -> dict:
@@ -32,6 +33,15 @@ def process_record(record: dict) -> None:
     InternalLogger.LogDebug("All results completed.")
     update_task_status(task_id, "DATA_GATHERED")
 
+    InternalLogger.LogDebug("Task status updated to DATA_GATHERED.")
+
+    InternalLogger.LogDebug("Publishing to SNS.")
+    publish_to_sns({
+        "task_id": task_id
+    })
+    InternalLogger.LogDebug("Published to SNS.")
+    InternalLogger.LogDebug("Record processed.")
+    return 0
 
 def extract_task_id_and_resolver(key: str):
     key_parts = key.split("/")
