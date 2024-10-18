@@ -1,10 +1,10 @@
 from ast import Tuple
 
 from results_checker.check_all_results_completed.check_all_results_completed import check_all_results_completed
-from results_checker.dynamo_db.dynamo_db import save_results, update_task_status
+from results_checker.dynamo_db.dynamo_db import update_task_status
 from results_checker.logging.logger import InternalLogger
 from results_checker.sns.sns import publish_to_sns
-
+from cs_ai_common.dynamodb.resolver_task_table import update_resolver_task
 
 def check_results(event: dict) -> dict:
     records = event.get("Records", [])
@@ -24,7 +24,7 @@ def process_record(record: dict) -> None:
     InternalLogger.LogDebug(f"Resolver: {resolver}")
 
     InternalLogger.LogDebug("Saving results to DynamoDB.")
-    save_results(task_id, resolver, "COMPLETED")
+    update_resolver_task(task_id, resolver, status="COMPLETED")
 
     if not check_all_results_completed(task_id):
         InternalLogger.LogDebug("Not all results completed.")

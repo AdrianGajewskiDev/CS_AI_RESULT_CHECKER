@@ -8,8 +8,9 @@ packages = [{include = "results_checker"}]
 
 [tool.poetry.dependencies]
 python = "^3.12"
-pydantic = "^1.5.1"
+pydantic = "^2.9.2"
 requests = "2.32.3"
+cs-ai-common = "^0.2.5"
 
 [tool.poetry.dev-dependencies]
 black = "^23.1.0"

@@ -4,22 +4,6 @@ import boto3
 RESULTS_TABLE_NAME = os.getenv("RESULTS_TABLE_NAME", "")
 TASKS_TABLE_NAME = os.getenv("TASK_TABLE_NAME", "")
 
-def save_results(task_id: str, resolver: str, status: str):
-    dynamodb = boto3.client('dynamodb')
-    item = {
-        'task_id': {
-            'S': task_id
-        },
-        'resolver': {
-            'S': resolver
-        },
-        'status': {
-            'S': status
-        }
-    }
-
-    dynamodb.put_item(TableName=RESULTS_TABLE_NAME, Item=item)
-
 def get_processed_results(task_id: str, resolver: str):
     dynamodb = boto3.client('dynamodb')
     response = dynamodb.query(

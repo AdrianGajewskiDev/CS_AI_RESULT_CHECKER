@@ -14,8 +14,10 @@ def check_all_results_completed(task_id: str) -> bool:
         resolver = _extract_resolver_name(resolver)
         response = get_processed_results(task_id, resolver)
         InternalLogger.LogDebug(f"Response: {response}")
-        if response:
-            processed.append(response)
+        _response = response[0] if response else None
+        _status = _response["status"]["S"] if "status" in _response else None
+        if _status == "COMPLETED":
+            processed.append(_response)
 
     return len(processed) == len(_to_process)
 
