@@ -124,7 +124,7 @@ toml = ["tomli"]
 
 [[package]]
 name = "cs-ai-common"
-version = "0.2.5"
+version = "0.2.6"
 description = ""
 category = "main"
 optional = false
@@ -484,7 +484,7 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.12"
-content-hash = "f58393a0039f3e5b8185a5a332a98c915ee58b2b6500f34b3412e240f27899ee"
+content-hash = "894f4ab001824a6e013ec75fa8ab2b0fe99ffeb89424e2c7b179839f9a92ba41"
 
 [metadata.files]
 annotated-types = []

@@ -2,11 +2,11 @@ import os
 from results_checker.dynamo_db.dynamo_db import get_processed_results
 import ast
 
-from results_checker.logging.logger import InternalLogger
+from cs_ai_common.logging.internal_logger import InternalLogger
 
 TO_PROCESS = os.getenv("RESOLVER_NAMES", "[]")
 
-def check_all_results_completed(task_id: str) -> bool:
+def check_all_results_completed(task_id: str) -> tuple:
     _to_process = ast.literal_eval(TO_PROCESS)
     processed = []
     for resolver in _to_process:
@@ -19,7 +19,7 @@ def check_all_results_completed(task_id: str) -> bool:
         if _status == "COMPLETED":
             processed.append(_response)
 
-    return len(processed) == len(_to_process)
+    return processed, len(processed) == len(_to_process)
 
 def _extract_resolver_name(resolver: str) -> str:
     return resolver.split("-")[2]

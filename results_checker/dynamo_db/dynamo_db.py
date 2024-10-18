@@ -20,23 +20,3 @@ def get_processed_results(task_id: str, resolver: str):
     )
 
     return response.get("Items", [])
-
-def update_task_status(task_id: str, status: str):
-    dynamodb = boto3.client('dynamodb')
-    dynamodb.update_item(
-        TableName=TASKS_TABLE_NAME,
-        Key={
-            'task_id': {
-                'S': task_id
-            }
-        },
-        UpdateExpression="set #status = :status",
-        ExpressionAttributeNames={
-            "#status": "status"
-        },
-        ExpressionAttributeValues={
-            ":status": {
-                'S': status
-            }
-        }
-    )

@@ -1,10 +1,13 @@
 from ast import Tuple
+import json
 
+from cs_ai_common.dynamodb.task_table import update_task
+from cs_ai_common.logging.internal_logger import InternalLogger
 from results_checker.check_all_results_completed.check_all_results_completed import check_all_results_completed
-from results_checker.dynamo_db.dynamo_db import update_task_status
-from results_checker.logging.logger import InternalLogger
 from results_checker.sns.sns import publish_to_sns
 from cs_ai_common.dynamodb.resolver_task_table import update_resolver_task
+
+from results_checker.utils.stats import build_stats
 
 def check_results(event: dict) -> dict:
     records = event.get("Records", [])
@@ -26,12 +29,15 @@ def process_record(record: dict) -> None:
     InternalLogger.LogDebug("Saving results to DynamoDB.")
     update_resolver_task(task_id, resolver, status="COMPLETED")
 
-    if not check_all_results_completed(task_id):
+    completed, all_completed = check_all_results_completed(task_id)
+    if not all_completed:
         InternalLogger.LogDebug("Not all results completed.")
         return
     
+    stats = build_stats(completed)
+
     InternalLogger.LogDebug("All results completed.")
-    update_task_status(task_id, "DATA_GATHERED")
+    update_task(task_id, status="DATA_GATHERED", stats=json.dumps(stats.dict()))
 
     InternalLogger.LogDebug("Task status updated to DATA_GATHERED.")
 
